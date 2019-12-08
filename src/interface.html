@@ -7,29 +7,37 @@
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Bungee+Inline|Cookie&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://findicons.com/files/icons/684/vistoon/128/globe.png" type="image/x-icon" />
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <title>Best Way</title>
 </head>
 
 <body ng-app="myApp" ng-controller="myCtrl"
     style="background: url('https://webneel.com/wallpaper/sites/default/files/images/09-2018/12-rain-wallpaper-zeshan-hussain.jpg'); background-size: 100% 100%; padding: 20px">
-    <h1 style="font-family: 'Bungee Inline', cursive; display: inline; text-shadow: 2px 2px 4px #000000; font-size: 3.6vw; color: white;">Best Way</h1>
-    <h2 style="display: inline; font-size: 3vw; text-shadow: 2px 2px 4px #000000; color: white; font-family: 'Cookie', cursive;">“Better to see something once than hear about it a thousand times”</h2>
+    <h1
+        style="font-family: 'Bungee Inline', cursive; display: inline; text-shadow: 2px 2px 4px #000000; font-size: 3.6vw; color: white;">
+        Best Way</h1>
+    <h2
+        style="display: inline; font-size: 3vw; text-shadow: 2px 2px 4px #000000; color: white; font-family: 'Cookie', cursive;">
+        “Never get so busy making a living that you forget to make a life.”</h2>
     <hr />
-    <table style="border: none; background: none;" class="ui selectable table">
+    <table style="table-layout: fixed; border: none; background: none;" class="ui selectable table">
         <thead style="background: rgba(19, 69, 102, 0.664)" class="ui inverted selectable table">
             <tr>
                 <th>
                     <div class="ui inverted search">
                         <div class="ui inverted icon input">
-                            <input style="border-radius: 5px;" id="newLocIdent" ng-change="isValidLocation()" class="inverted prompt" type="text"
-                                placeholder="Search locations..." ng-model="_newName" />
+                            <input style="border-radius: 5px;" id="newLocIdent" ng-change="isValidLocation()"
+                                class="inverted prompt" type="text" placeholder="Search locations..."
+                                ng-model="_newName" />
                             <i class="search icon"></i>
                         </div>
-                        <button ng-click="addLocation()" ng-show="!_validLoc"
-                            class="ui inverted right labeled icon button">
+                        <button id="addIdent" ng-click="addLocation()" ng-disabled="_validLoc"
+                            class="ui primary right labeled icon button">
                             <i class="right arrow icon"></i>
                             Add Location
                         </button>
-                        <div ng-click="isValidLocation()" class="results"></div>
+                        <div ng-click="isValidLocation(); locationPick();" class="results"></div>
                     </div>
                 </th>
                 <th></th>
@@ -55,15 +63,20 @@
         <tbody style="color: white; background: rgba(97, 97, 97, 0.705)">
             <tr ng-if="locations.length < 2">
                 <td colspan="3">
-                    <b><h4>Add atleast ({{ 2 - locations.length }}) location/s to call API</h4></b>
+                    <div class="ui inverted negative message">
+                        <div class="header">
+                            <i class="icon thumbs down"></i>
+                            Add atleast ({{ 2 - locations.length }}) location/s to call API
+                        </div>
+                        </p>
+                    </div>
                 </td>
             </tr>
             <tr ng-repeat="loc in locations track by $index">
                 <td><i class="map marker icon"></i>{{ $index + 1 }}</td>
                 <td><b>{{ loc }}</b></td>
                 <td class="right aligned">
-                    <button ng-click="deleteLocation($index)" class="circular ui icon button"
-                        data-title="Add users to your feed">
+                    <button ng-click="deleteLocation($index)" class="circular ui icon button">
                         <i class="icon delete"></i>
                     </button>
                 </td>

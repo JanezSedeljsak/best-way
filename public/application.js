@@ -21,17 +21,56 @@ app.controller("myCtrl", [
 
         //methods
         $scope.addLocation = () => {
-            $scope.locations.push($scope._newName);
-            $scope._newName = "";
-            $scope._validLoc = true;
+            // a lot of hacky code bcs of wierd lifecycle
+            if ($scope.locations) {
+                if ($scope.locations.includes($scope._newName)) {
+                    swal({
+                        title: "Location already in list!",
+                        text: "Do you wanna add a duplicate?",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true
+                    }).then(willDelete => {
+                        if (!willDelete) {
+                            swal("List adding aborted!", ".....", "success");
+                            $scope._newName = "";
+                            $scope._validLoc = true;
+                            setTimeout(() => {
+                                document.getElementById("addIdent").click();
+                            }, 100);
+                        } else {
+                            swal("Location will be added to list!", ".....", "success");
+                            $scope.locations.push($scope._newName);
+                            $scope._newName = "";
+                            $scope._validLoc = true;
+                            document.getElementById("newLocIdent").value = "";
+
+                            setTimeout(() => {
+                                document.getElementById("addIdent").click();
+                            }, 100);
+                        }
+                    });
+                } else {
+                    if ($scope._newName != "") {
+                        $scope.locations.push($scope._newName);
+                    }
+                    $scope._newName = "";
+                    $scope._validLoc = true;
+                }
+            }
         };
 
         $scope.isValidLocation = () => {
-            console.log(document.getElementById("newLocIdent").value);
             $scope._newName = document.getElementById("newLocIdent").value;
             $scope._validLoc = $window.possibleCities
                 ? !$window.possibleCities.includes($scope._newName)
                 : false;
+        };
+
+        $scope.locationPick = () => {
+            if (document.querySelector(".empty")) return;
+            $scope._validLoc = false;
+            $scope._newName = window.event.target.innerText;
         };
 
         $scope.deleteLocation = _index => {
