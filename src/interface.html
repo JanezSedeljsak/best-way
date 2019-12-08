@@ -6,14 +6,16 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Bungee+Inline|Cookie&display=swap" rel="stylesheet">
 </head>
 
 <body ng-app="myApp" ng-controller="myCtrl"
-    style="background: url('https://www.pixel4k.com/wp-content/uploads/2018/10/paper-airplane-hand-sky-sunset-4k_1540574974.jpg'); background-size: 100% 100%; padding: 20px">
-    <h1 style="color: white">Best way</h1>
+    style="background: url('https://webneel.com/wallpaper/sites/default/files/images/09-2018/12-rain-wallpaper-zeshan-hussain.jpg'); background-size: 100% 100%; padding: 20px">
+    <h1 style="font-family: 'Bungee Inline', cursive; display: inline; text-shadow: 2px 2px 4px #000000; font-size: 3.6vw; color: white;">Best Way</h1>
+    <h2 style="display: inline; font-size: 3vw; text-shadow: 2px 2px 4px #000000; color: white; font-family: 'Cookie', cursive;">“Better to see something once than hear about it a thousand times”</h2>
     <hr />
-    <table style="border: none; box-shadow: 0 0 5px 2px #333;" class="ui selectable table">
-        <thead class="ui selectable inverted table">
+    <table style="border: none; background: none;" class="ui selectable table">
+        <thead style="background: rgba(19, 69, 102, 0.664)" class="ui inverted selectable table">
             <tr>
                 <th>
                     <div class="ui inverted search">
@@ -22,7 +24,7 @@
                                 placeholder="Search locations..." ng-model="_newName" />
                             <i class="search icon"></i>
                         </div>
-                        <button ng-click="addLocation()" ng-disabled="_validLoc"
+                        <button ng-click="addLocation()" ng-show="!_validLoc"
                             class="ui inverted right labeled icon button">
                             <i class="right arrow icon"></i>
                             Add Location
@@ -32,12 +34,12 @@
                 </th>
                 <th></th>
                 <th class="right aligned">
-                    <button ng-if="locations.length == 2" class="circular inverted ui icon button"
+                    <button ng-show="locations.length == 2" class="circular inverted ui icon button"
                         ng-click="basicFetch()">
                         <span>End Start Location</span>
                         <i class="icon search"></i>
                     </button>
-                    <button ng-click="arrayFetch()" ng-if="locations.length > 1"
+                    <button ng-click="arrayFetch()" ng-show="locations.length > 1"
                         class="circular ui inverted icon button">
                         <span>Location Array</span>
                         <i class="icon audible"></i>
@@ -50,7 +52,7 @@
                 <th class="right aligned">Delete</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody style="color: white; background: rgba(97, 97, 97, 0.705)">
             <tr ng-if="locations.length < 2">
                 <td colspan="3">
                     <b><h4>Add atleast ({{ 2 - locations.length }}) location/s to call API</h4></b>
