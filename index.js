@@ -26,11 +26,11 @@ app.get('/api/basic/:start/:end', async (req, res) => {
         end: await Methods.getLocationWeather(req.params.end)
     });
 });
-app.get('/api/locations/:locations', (req, res) => {
+app.get('/api/locations/:locations', async (req, res) => {
     if (JSON.parse(req.params.locations).length > 1) {
         res.status(200).json({
             ok: true,
-            result: JSON.parse(req.params.locations)
+            result: await Promise.all(JSON.parse(req.params.locations).map(async x => await Methods.getLocationWeather(x)))
         });
     } else {
         res.status(200).json({

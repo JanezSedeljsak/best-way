@@ -136,7 +136,7 @@
         $scope.arrayFetch = async () => {
           window.event.preventDefault();
           let response = await fetch(
-            `${$scope.apiPreset}/locations/${$scope.locations}`
+            `${$scope.apiPreset}/locations/${JSON.stringify($scope.locations)}`
           );
           let json = await response.json();
           console.log(json);
