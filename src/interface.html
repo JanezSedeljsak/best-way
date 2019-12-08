@@ -1,195 +1,155 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <style>
-      .tooltip {
-        position: relative;
-        display: inline-block;
-        border-bottom: 1px dotted black;
-      }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted black;
+        }
 
-      .tooltip .tooltiptext {
-        visibility: hidden;
-        width: 120px;
-        background-color: #555;
-        color: #fff;
-        text-align: center;
-        border-radius: 6px;
-        padding: 5px 0;
-        position: absolute;
-        z-index: 1;
-        bottom: 125%;
-        left: 50%;
-        margin-left: -60px;
-        opacity: 0;
-        transition: opacity 0.3s;
-      }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
 
-      .tooltip .tooltiptext::after {
-        content: "";
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        margin-left: -5px;
-        border-width: 5px;
-        border-style: solid;
-        border-color: #555 transparent transparent transparent;
-      }
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+        }
 
-      .tooltip:hover .tooltiptext {
-        visibility: visible;
-        opacity: 1;
-      }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
     </style>
-    <script
-      src="https://code.jquery.com/jquery-3.1.1.min.js"
-      crossorigin="anonymous"
-    ></script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css"
-    />
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-  </head>
-  <body
-    ng-app="myApp"
-    ng-controller="myCtrl"
-    style="background: url('https://www.graciaviva.cat/png/big/3/39567_photos-white-background.jpg'); padding: 20px"
-  >
+</head>
+
+<body ng-app="myApp" ng-controller="myCtrl"
+    style="background: url('https://www.graciaviva.cat/png/big/3/39567_photos-white-background.jpg'); padding: 20px">
     <h1>Best way</h1>
     <hr />
     <table class="ui selectable table">
-      <thead class="ui selectable inverted table">
-        <tr>
-          <th>
-            <div class="ui search">
-              <div class="ui icon input">
-                <input
-                  class="prompt"
-                  type="text"
-                  placeholder="Search locations..."
-                  ng-model="_newName"
-                />
-                <i class="search icon"></i>
-              </div>
-              <button
-                ng-disabled="_newName.length < 3"
-                class="ui primary right labeled icon button"
-              >
-                <i class="right arrow icon"></i>
-                Add Location
-              </button>
-              <div class="results"></div>
-            </div>
-            <script>
-              const cities = require("cities-list");
-              console.log(cities);
-              $(".ui.search").search({
-                source: [
-                  { title: "Andorra" },
-                  { title: "United Arab Emirates" },
-                  { title: "Afghanistan" },
-                  { title: "Antigua" },
-                  { title: "Anguilla" },
-                  { title: "Albania" },
-                  { title: "Armenia" },
-                  { title: "Netherlands Antilles" },
-                  { title: "Angola" },
-                  { title: "Argentina" },
-                  { title: "American Samoa" },
-                  { title: "Austria" },
-                  { title: "Australia" },
-                  { title: "Aruba" },
-                  { title: "Aland Islands" },
-                  { title: "Azerbaijan" },
-                  { title: "Bosnia" },
-                  { title: "Barbados" },
-                  { title: "Bangladesh" },
-                  { title: "Belgium" },
-                  { title: "Burkina Faso" },
-                  { title: "Bulgaria" },
-                  { title: "Bahrain" },
-                  { title: "Burundi" }
-                  // etc
-                ]
-              });
-            </script>
-          </th>
-          <th></th>
-          <th class="right aligned">
-            <button
-              ng-if="locations.length == 2"
-              class="circular ui icon button tooltip"
-              ng-click="basicFetch()"
-            >
-              <span class="tooltiptext">End Start Location</span>
-              <i class="icon search"></i>
-            </button>
-            <button
-              ng-click="arrayFetch()"
-              ng-if="locations.length > 1"
-              class="circular ui icon button tooltip"
-            >
-              <span class="tooltiptext">Location Array</span>
-              <i class="icon audible"></i>
-            </button>
-          </th>
-        </tr>
-        <tr>
-          <th>#</th>
-          <th>Location</th>
-          <th class="right aligned">Delete</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="loc in locations track by $index">
-          <td><i class="map marker icon"></i>{{ $index + 1 }}</td>
-          <td>{{ loc }}</td>
-          <td class="right aligned">
-            <button
-              ng-click="deleteLocation($index)"
-              class="circular ui icon button"
-              data-title="Add users to your feed"
-            >
-              <i class="icon delete"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
+        <thead class="ui selectable inverted table">
+            <tr>
+                <th>
+                    <div class="ui search">
+                        <div class="ui icon input">
+                            <input class="prompt" type="text" placeholder="Search locations..." ng-model="_newName" />
+                            <i class="search icon"></i>
+                        </div>
+                        <button ng-click="addLocation()" ng-disabled="$window.validLocation" class="ui primary right labeled icon button">
+                            <i class="right arrow icon"></i>
+                            Add Location
+                        </button>
+                        <div class="results"></div>
+                    </div>
+                    <script>
+                        window.api = "http://localhost:5000/api";
+                        window.validLocation = false;
+                        fetch(`${window.api}/cities`)
+                            .then(response => response.json())
+                            .then(json => {
+                                console.log(json.result);
+                                $(".ui.search").search({
+                                    source: json.result
+                                });
+                            });
+                    </script>
+                </th>
+                <th></th>
+                <th class="right aligned">
+                    <button ng-if="locations.length == 2" class="circular ui icon button tooltip"
+                        ng-click="basicFetch()">
+                        <span class="tooltiptext">End Start Location</span>
+                        <i class="icon search"></i>
+                    </button>
+                    <button ng-click="arrayFetch()" ng-if="locations.length > 1"
+                        class="circular ui icon button tooltip">
+                        <span class="tooltiptext">Location Array</span>
+                        <i class="icon audible"></i>
+                    </button>
+                </th>
+            </tr>
+            <tr>
+                <th>#</th>
+                <th>Location</th>
+                <th class="right aligned">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="loc in locations track by $index">
+                <td><i class="map marker icon"></i>{{ $index + 1 }}</td>
+                <td>{{ loc }}</td>
+                <td class="right aligned">
+                    <button ng-click="deleteLocation($index)" class="circular ui icon button"
+                        data-title="Add users to your feed">
+                        <i class="icon delete"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
     </table>
     <hr />
     <script>
-      let app = angular.module("myApp", []);
-      app.controller("myCtrl", $scope => {
-        $scope.apiPreset = "http://localhost:5000/api";
+        let app = angular.module("myApp", []);
+        app.controller("myCtrl", $scope => {
+            // variables
+            $scope._newName = "";
+            $scope.locations = [];
 
-        $scope.addLocation = () => {
-          $scope.locations.push($scope._newName);
-          $scope._newName = "";
-        };
-        $scope.deleteLocation = _index => {
-          $scope.locations.splice(_index, 1);
-        };
-        $scope.basicFetch = async () => {
-          window.event.preventDefault();
-          let response = await fetch(
-            `${$scope.apiPreset}/basic/${$scope.locations[0]}/${$scope.locations[1]}`
-          );
-          let json = await response.json();
-          console.log(json);
-        };
-        $scope.arrayFetch = async () => {
-          window.event.preventDefault();
-          let response = await fetch(
-            `${$scope.apiPreset}/locations/${JSON.stringify($scope.locations)}`
-          );
-          let json = await response.json();
-          console.log(json);
-        };
-        $scope._newName = "";
-        $scope.locations = [];
-      });
+            //methods
+            $scope.addLocation = () => {
+                $scope.locations.push($scope._newName);
+                $scope._newName = "";
+            };
+
+            $scope.deleteLocation = _index => {
+                $scope.locations.splice(_index, 1);
+            };
+
+            $scope.basicFetch = async () => {
+                window.event.preventDefault();
+                let response = await fetch(
+                    `${window.api}/basic/${$scope.locations[0]}/${$scope.locations[1]}`
+                );
+                let json = await response.json();
+                console.log(json);
+            };
+
+            $scope.arrayFetch = async () => {
+                window.event.preventDefault();
+                let response = await fetch(
+                    `${window.api}/locations/${JSON.stringify($scope.locations)}`
+                );
+                let json = await response.json();
+                console.log(json);
+            };
+        });
     </script>
-  </body>
+</body>
+
 </html>

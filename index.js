@@ -9,7 +9,16 @@ class Methods {
         return new Promise(async resolve => {
             axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${_location}&appid=` + '70ef7d1ecc959f4ef1a91a8a4ab7a914')
                 .then(response => {
-                    console.log(response.data);
+                    resolve(response.data);
+                })
+                .catch(err => resolve(err))
+        });
+    }
+
+    static getCitiesList() {
+        return new Promise(async resolve => {
+            axios.get(`http://localhost:5000/static/list.txt`)
+                .then(response => {
                     resolve(response.data);
                 })
                 .catch(err => resolve(err))
@@ -40,6 +49,16 @@ app.get('/api/locations/:locations', async (req, res) => {
     }
 
 });
+
+app.get('/api/cities', async (req, res) => {
+    let result = await Methods.getCitiesList();
+    res.status(200).json({
+        ok: true,
+        result: result.split("\n").map(loc => {
+            return { title: loc }
+        })
+    });
+})
 app.use('/static', express.static('public'));
 
 app.listen(process.env.PORT || 5000, () => console.log(`App running`))
