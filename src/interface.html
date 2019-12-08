@@ -1,51 +1,11 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <style>
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            border-bottom: 1px dotted black;
-        }
-
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 120px;
-            background-color: #555;
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px 0;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -60px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .tooltip .tooltiptext::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: #555 transparent transparent transparent;
-        }
-
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-    </style>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <style rel="stylesheet" href="./static/application.css"></style>
 </head>
 
 <body ng-app="myApp" ng-controller="myCtrl"
@@ -58,27 +18,19 @@
                 <th>
                     <div class="ui search">
                         <div class="ui icon input">
-                            <input class="prompt" type="text" placeholder="Search locations..." ng-model="_newName" />
+                            <input id="newLocIdent" ng-change="isValidLocation()" class="prompt" type="text" placeholder="Search locations..." ng-model="_newName" />
                             <i class="search icon"></i>
                         </div>
-                        <button ng-click="addLocation()" ng-disabled="$window.validLocation" class="ui primary right labeled icon button">
+                        <button 
+                            ng-click="addLocation()" 
+                            ng-disabled="_validLoc" 
+                            class="ui primary right labeled icon button"
+                        >
                             <i class="right arrow icon"></i>
                             Add Location
                         </button>
-                        <div class="results"></div>
+                        <div ng-click="isValidLocation()" class="results"></div>
                     </div>
-                    <script>
-                        window.api = "http://localhost:5000/api";
-                        window.validLocation = false;
-                        fetch(`${window.api}/cities`)
-                            .then(response => response.json())
-                            .then(json => {
-                                console.log(json.result);
-                                $(".ui.search").search({
-                                    source: json.result
-                                });
-                            });
-                    </script>
                 </th>
                 <th></th>
                 <th class="right aligned">
@@ -114,42 +66,7 @@
         </tbody>
     </table>
     <hr />
-    <script>
-        let app = angular.module("myApp", []);
-        app.controller("myCtrl", $scope => {
-            // variables
-            $scope._newName = "";
-            $scope.locations = [];
-
-            //methods
-            $scope.addLocation = () => {
-                $scope.locations.push($scope._newName);
-                $scope._newName = "";
-            };
-
-            $scope.deleteLocation = _index => {
-                $scope.locations.splice(_index, 1);
-            };
-
-            $scope.basicFetch = async () => {
-                window.event.preventDefault();
-                let response = await fetch(
-                    `${window.api}/basic/${$scope.locations[0]}/${$scope.locations[1]}`
-                );
-                let json = await response.json();
-                console.log(json);
-            };
-
-            $scope.arrayFetch = async () => {
-                window.event.preventDefault();
-                let response = await fetch(
-                    `${window.api}/locations/${JSON.stringify($scope.locations)}`
-                );
-                let json = await response.json();
-                console.log(json);
-            };
-        });
-    </script>
+    <script src="./static/application.js"></script>
 </body>
 
 </html>
