@@ -1,0 +1,25 @@
+{
+  "name": "greeting-cards",
+  "version": "1.0.0",
+  "description": "Webapp to design custom greeting cards",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JanezSedeljsak/greeting-cards.git"
+  },
+  "author": "Janez Sedeljsak",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JanezSedeljsak/greeting-cards/issues"
+  },
+  "homepage": "https://github.com/JanezSedeljsak/greeting-cards#readme",
+  "dependencies": {
+    "angular": "^1.7.9",
+    "express": "^4.17.1",
+    "path": "^0.12.7"
+  }
+}
