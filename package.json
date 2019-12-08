@@ -1,5 +1,5 @@
 {
-  "name": "greeting-cards",
+  "name": "best-way",
   "version": "1.0.0",
   "description": "Webapp to design custom greeting cards",
   "main": "index.js",
@@ -9,16 +9,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JanezSedeljsak/greeting-cards.git"
+    "url": "git+https://github.com/JanezSedeljsak/best-way.git"
   },
   "author": "Janez Sedeljsak",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/JanezSedeljsak/greeting-cards/issues"
+    "url": "https://github.com/JanezSedeljsak/best-way/issues"
   },
-  "homepage": "https://github.com/JanezSedeljsak/greeting-cards#readme",
+  "homepage": "https://github.com/JanezSedeljsak/best-way#readme",
   "dependencies": {
     "angular": "^1.7.9",
+    "axios": "^0.19.0",
     "express": "^4.17.1",
     "path": "^0.12.7"
   }

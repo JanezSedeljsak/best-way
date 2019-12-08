@@ -13,10 +13,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
   </head>
   <body ng-app="myApp" ng-controller="myCtrl" style="padding: 20px">
-    <table class="ui selectable inverted table">
-      <thead>
+    <h1>Best way</h1>
+    <hr />
+    <table class="ui selectable table">
+      <thead class="ui selectable inverted table">
         <tr>
-          <th colspan="3">
+          <th>
             <div class="ui right labeled left icon input">
               <i class="tags icon"></i>
               <input
@@ -29,6 +31,25 @@
               </a>
             </div>
           </th>
+          <th></th>
+          <th class="right aligned">
+            <button
+              ng-if="locations.length == 2"
+              class="circular ui icon button"
+              ng-click="basicFetch()"
+              data-content="Add users to your feed"
+            >
+              <i class="icon search"></i>
+            </button>
+            <button
+              ng-click="arrayFetch()"
+              ng-if="locations.length > 1"
+              class="circular ui icon button"
+              data-title="Add users to your feed"
+            >
+              <i class="icon audible"></i>
+            </button>
+          </th>
         </tr>
         <tr>
           <th>#</th>
@@ -40,16 +61,45 @@
         <tr ng-repeat="loc in locations track by $index">
           <td><i class="map marker icon"></i>{{ $index + 1 }}</td>
           <td>{{ loc }}</td>
-          <td class="right aligned">x</td>
+          <td class="right aligned">
+            <button
+              ng-click="deleteLocation($index)"
+              class="circular ui icon button"
+              data-title="Add users to your feed"
+            >
+              <i class="icon delete"></i>
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
+    <hr />
     <script>
-      var app = angular.module("myApp", []);
-      app.controller("myCtrl", function($scope) {
+      let app = angular.module("myApp", []);
+      app.controller("myCtrl", $scope => {
+        $scope.apiPreset = "http://localhost:5000/api";
         $scope.addLocation = () => {
           $scope.locations.push($scope._newName);
           $scope._newName = "";
+        };
+        $scope.deleteLocation = _index => {
+          $scope.locations.splice(_index, 1);
+        };
+        $scope.basicFetch = async () => {
+          window.event.preventDefault();
+          let response = await fetch(
+            `${$scope.apiPreset}/basic/${$scope.locations[0]}/${$scope.locations[1]}`
+          );
+          let json = await response.json();
+          console.log(json);
+        };
+        $scope.arrayFetch = async () => {
+          window.event.preventDefault();
+          let response = await fetch(
+            `${$scope.apiPreset}/locations/${$scope.locations}`
+          );
+          let json = await response.json();
+          console.log(json);
         };
         $scope._newName = "";
         $scope.locations = [];

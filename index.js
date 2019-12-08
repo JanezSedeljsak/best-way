@@ -1,20 +1,36 @@
 const express = require('express')
+const axios = require('axios')
 const app = express()
 const path = require('path')
 const views = __dirname + '/src'
 
-app.get('/', (req, res) => res.sendFile(path.join(views + '/interface.html')))
-app.get('/api/basic/:start/:end', (req, res) => {
+class Methods {
+    static getLocationWeather(_location) {
+        return new Promise(async resolve => {
+            axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${_location}&appid=` + '70ef7d1ecc959f4ef1a91a8a4ab7a914')
+                .then(response => {
+                    console.log(response.data);
+                    resolve(response.data);
+                })
+                .catch(err => resolve(err))
+        });
+    }
+}
+
+app.get('/', (req, res) => res.sendFile(path.join(views + '/interface.html')));
+
+app.get('/api/basic/:start/:end', async (req, res) => {
     res.status(200).json({
         ok: false,
-        result: req.params.start
+        start: await Methods.getLocationWeather(req.params.start),
+        end: await Methods.getLocationWeather(req.params.end)
     });
 });
 app.get('/api/locations/:locations', (req, res) => {
-    if(req.params.locations.split(",").length > 1) {
+    if (JSON.parse(req.params.locations).length > 1) {
         res.status(200).json({
             ok: true,
-            result: req.params.locations.split(",")
+            result: JSON.parse(req.params.locations)
         });
     } else {
         res.status(200).json({
