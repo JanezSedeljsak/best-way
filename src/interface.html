@@ -13,7 +13,7 @@
 </head>
 
 <body ng-app="myApp" ng-controller="myCtrl"
-    style="background: url('https://webneel.com/wallpaper/sites/default/files/images/09-2018/12-rain-wallpaper-zeshan-hussain.jpg'); background-size: 100% 100%; padding: 20px">
+    style="background: url('https://community-home-assistant-assets.s3.dualstack.us-west-2.amazonaws.com/original/3X/d/e/dea8c60d19e758c8744437e7b91b73c10ad0e030.jpeg'); background-size: 100% 100%; padding: 20px">
     <h1
         style="font-family: 'Bungee Inline', cursive; display: inline; text-shadow: 2px 2px 4px #000000; font-size: 3.6vw; color: white;">
         Best Way</h1>
@@ -21,7 +21,7 @@
         style="display: inline; font-size: 3vw; text-shadow: 2px 2px 4px #000000; color: white; font-family: 'Cookie', cursive;">
         “Never get so busy making a living that you forget to make a life.”</h2>
     <hr />
-    <table style="table-layout: fixed; border: none; background: none;" class="ui selectable table">
+    <table ng-if="!wayView" style="table-layout: fixed; border: none; background: none;" class="ui selectable table">
         <thead style="background: rgba(19, 69, 102, 0.664)" class="ui inverted selectable table">
             <tr>
                 <th>
@@ -83,7 +83,34 @@
             </tr>
         </tbody>
     </table>
-    <hr />
+    <div ng-if="wayView" class="ui list" style="border: 1px solid white; padding: 15px; background: none;">
+        <button ng-click="back()" class="ui secondary button">
+            <i class="icon delete"></i>
+            Back
+        </button>
+        <hr />
+        <div style="overflow-y: auto !important; max-height: 75vh;" class="ui special cards">
+            <div class="card" ng-repeat="res in locResult track by $index">
+                <div class="blurring dimmable image">
+                    <img
+                        src="https://www.clipartkey.com/mpngs/m/41-414481_vacation-icon-traveling-png-tour-and-travel-icon.png">
+                </div>
+                <div class="content">
+                    <a class="header">{{ $index + 1 }} {{ res.name }}, {{ res.sys.country }}</a>
+                    <div class="meta">
+                        <span class="date">{{ res.weather[0].main }}</span>
+                    </div>
+                </div>
+                <div class="extra content">
+                    <a>
+                        <b>Temp</b>: {{ res.main.temp - 273 | number: 2 }}°C<br/>
+                        <b>Max Temp</b>: {{ res.main.temp_max - 273 | number: 2 }}°C<br/>
+                        <b>Min Temp</b>: {{ res.main.temp_min - 273 | number: 2 }}°C<br/>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="./static/application.js"></script>
 </body>
 

@@ -18,6 +18,8 @@ app.controller("myCtrl", [
         $scope._newName = "";
         $scope.locations = [];
         $scope._validLoc = true;
+        $scope.wayView = false;
+        $scope.locResult = [];
 
         //methods
         $scope.addLocation = () => {
@@ -56,9 +58,12 @@ app.controller("myCtrl", [
                     }
                     $scope._newName = "";
                     $scope._validLoc = true;
+                    document.getElementById("newLocIdent").value = "";
                 }
             }
         };
+
+        $scope.back = () => ($scope.wayView = false);
 
         $scope.isValidLocation = () => {
             $scope._newName = document.getElementById("newLocIdent").value;
@@ -78,12 +83,13 @@ app.controller("myCtrl", [
         };
 
         $scope.basicFetch = async () => {
+            $scope.wayView = true;
             window.event.preventDefault();
             let response = await fetch(
                 `${window.api}/basic/${$scope.locations[0]}/${$scope.locations[1]}`
             );
             let json = await response.json();
-            console.log(json);
+            $scope.locResult = json;
         };
 
         $scope.arrayFetch = async () => {
@@ -92,7 +98,9 @@ app.controller("myCtrl", [
                 `${window.api}/locations/${JSON.stringify($scope.locations)}`
             );
             let json = await response.json();
-            console.log(json);
+            $scope.locResult = json.result;
+            console.log($scope.locResult);
+            $scope.wayView = true;
         };
     }
 ]);
