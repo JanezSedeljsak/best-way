@@ -54,9 +54,7 @@ app.get('/api/cities', async (req, res) => {
     let result = await Methods.getCitiesList();
     res.status(200).json({
         ok: true,
-        result: result.split("\n").map(loc => {
-            return { title: loc }
-        })
+        result: result.split("\n").map(loc => ({ title: loc }))
     });
 })
 app.use('/static', express.static('public'));

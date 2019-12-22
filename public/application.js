@@ -63,7 +63,7 @@ app.controller("myCtrl", [
             }
         };
 
-        $scope.back = () => ($scope.wayView = false);
+        $scope.back = () => location.reload();
 
         $scope.isValidLocation = () => {
             $scope._newName = document.getElementById("newLocIdent").value;
