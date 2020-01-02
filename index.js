@@ -26,7 +26,8 @@ class Methods {
     }
 }
 
-app.get('/', (req, res) => res.sendFile(path.join(views + '/interface.html')));
+app.get('/locray', (req, res) => res.sendFile(path.join(views + '/locray.html')));
+app.get('/', (req, res) => res.sendFile(path.join(views + '/base.html')));
 
 app.get('/api/basic/:start/:end', async (req, res) => {
     res.status(200).json({

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
+    <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Bungee+Inline|Cookie&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://findicons.com/files/icons/684/vistoon/128/globe.png" type="image/x-icon" />
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="./static/base.css"/>
+    <title>Best Way</title>
+</head>
+
+<body ng-app="myApp" ng-controller="myCtrl">
+    <div class="outer">
+        <div class="inner">
+            <div class="prod-left">
+                <h1 class="prod-head"><span style="color:#0f457f">BestWay</span> </h1>
+                <form>
+                        <div class="form-group">
+                          <label for="exampleInputEmail1" class="bmd-label-floating">Starting point</label>
+                          <input id="start" type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleInputPassword1" class="bmd-label-floating">Destination</label>
+                          <input type="text" class="form-control">
+                        </div>
+                </form>
+                <button type="button" class="btn btn-raised btn-primary">Search</button>
+                <button type="button" class="btn btn-raised btn-link" onclick="window.location = '/locray'">Advanced</button>
+            </div>
+        </div>
+    </div>
+    <script src="./static/base.js"></script>
+</body>
+
+</html>
