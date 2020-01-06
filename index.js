@@ -61,3 +61,8 @@ app.get('/api/cities', async (req, res) => {
 app.use('/static', express.static('public'));
 
 app.listen(process.env.PORT || 5000, () => console.log(`App running`))
+
+
+/*
+fetch("https://route.ls.hereapi.com/routing/7.2/calculateroute.json?apiKey=3pwTWXX_AtpLB6OkzdFO3Ns8eJ3nc9Wke6GXnbnwOPQ&waypoint0=geo!52.5,13.4&waypoint1=geo!52.5,13.45&mode=fastest;car;traffic:disabled").then(resposne => resposne.json()).then(console.log);
+*/
