@@ -10,21 +10,31 @@
     <link rel="icon" href="https://findicons.com/files/icons/684/vistoon/128/globe.png" type="image/x-icon" />
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <title>Best Way</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Nunito+Sans:400,900');
+        @import url('https://fonts.googleapis.com/css?family=Raleway');
+        table td,
+        table th {
+            border-bottom: 1px solid #3333334f !important;
+        }
+    </style>
 </head>
 
 <body ng-app="myApp" ng-controller="myCtrl"
-    style="background: url('https://hdqwalls.com/wallpapers/airplane-wings.jpg'); background-size: 100% 100%; padding: 20px">
-    <h1
-        style="font-family: 'Bungee Inline', cursive; display: inline; text-shadow: 2px 2px 4px #000000; font-size: 3.6vw; color: white;">
-        Best Way</h1>
-    <h2
-        style="display: inline; font-size: 3vw; text-shadow: 2px 2px 4px #000000; color: white; font-family: 'Cookie', cursive;">
-        “Never get so busy making a living that you forget to make a life.”</h2>
-    <hr />
-    <table ng-if="!wayView" style="table-layout: fixed; border: none; background: none;" class="ui selectable table">
-        <thead style="background: rgba(19, 69, 102, 0.664)" class="ui inverted selectable table">
+    style="	background:url('./static/back.png') no-repeat center center fixed;background-size:cover; padding: 20px">
+    <h1 style="font-family: 'Nunito Sans', sans-serif; float: left; display: inline; font-size: 3.6vw; color: #0f457f;">
+        Best Way
+    </h1>
+    <button style="float:right" onclick="window.location = '/'" class="circular basic ui icon button">
+        <i class="angle double left icon"></i></i>Back
+    </button>
+    <hr style="clear:both" />
+    <table ng-if="!wayView"
+        style="table-layout: fixed; border: none; background: transparent !important; width: 70vw; font-size: .8vw"
+        class="ui selectable table">
+        <thead class="ui selectable table">
             <tr>
-                <th>
+                <th style="background: transparent !important;">
                     <div class="ui inverted search">
                         <div class="ui inverted icon input">
                             <input style="border-radius: 5px;" id="newLocIdent" ng-change="isValidLocation()"
@@ -40,27 +50,25 @@
                         <div ng-click="isValidLocation(); locationPick();" class="results"></div>
                     </div>
                 </th>
-                <th></th>
-                <th class="right aligned">
-                    <button ng-show="locations.length == 2" class="circular inverted ui icon button"
-                        ng-click="basicFetch()">
+                <th style="background: transparent !important;"></th>
+                <th style="background: transparent !important;" class="right aligned">
+                    <button ng-show="locations.length == 2" class="circular ui icon button" ng-click="basicFetch()">
                         <span>End Start Location</span>
                         <i class="icon search"></i>
                     </button>
-                    <button ng-click="arrayFetch()" ng-show="locations.length > 1"
-                        class="circular ui inverted icon button">
+                    <button ng-click="arrayFetch()" ng-show="locations.length > 1" class="circular ui icon button">
                         <span>Location Array</span>
                         <i class="icon audible"></i>
                     </button>
                 </th>
             </tr>
             <tr>
-                <th>#</th>
-                <th>Location</th>
-                <th class="right aligned">Delete</th>
+                <th style="background: transparent !important;">#</th>
+                <th style="background: transparent !important;">Location</th>
+                <th style="background: transparent !important;" class="right aligned">Delete</th>
             </tr>
         </thead>
-        <tbody style="color: white; background: rgba(97, 97, 97, 0.705)">
+        <tbody style="color: #333; background: transparent">
             <tr ng-if="locations.length < 2">
                 <td colspan="3">
                     <div class="ui inverted negative message">
@@ -83,7 +91,7 @@
             </tr>
         </tbody>
     </table>
-    <div ng-if="wayView" class="ui list" style="border: 1px solid white; padding: 15px; background: none;">
+    <div ng-if="wayView" class="ui list" style="border: 1px solid #333; padding: 15px; background: none;">
         <button ng-click="back()" class="ui secondary button">
             <i class="icon delete"></i>
             Back
@@ -103,9 +111,9 @@
                 </div>
                 <div class="extra content">
                     <a>
-                        <b>Temp</b>: {{ res.main.temp - 273 | number: 2 }}°C<br/>
-                        <b>Max Temp</b>: {{ res.main.temp_max - 273 | number: 2 }}°C<br/>
-                        <b>Min Temp</b>: {{ res.main.temp_min - 273 | number: 2 }}°C<br/>
+                        <b>Temp</b>: {{ res.main.temp - 273 | number: 2 }}°C<br />
+                        <b>Max Temp</b>: {{ res.main.temp_max - 273 | number: 2 }}°C<br />
+                        <b>Min Temp</b>: {{ res.main.temp_min - 273 | number: 2 }}°C<br />
                     </a>
                 </div>
             </div>
