@@ -4,6 +4,11 @@ const app = express()
 const path = require('path')
 const views = __dirname + '/src'
 
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+})
+
 class Methods {
     static getLocationWeather(_location) {
         return new Promise(async resolve => {
