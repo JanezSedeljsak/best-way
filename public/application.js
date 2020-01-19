@@ -1,5 +1,5 @@
 //code below executes on load
-window.api = "http://localhost:5000/api";
+window.api = "https://best-way.herokuapp.com/api";
 fetch(`${window.api}/cities`)
     .then(response => response.json())
     .then(json => {
