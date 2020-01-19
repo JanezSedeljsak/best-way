@@ -22,7 +22,7 @@ class Methods {
 
     static getCitiesList() {
         return new Promise(async resolve => {
-            axios.get(`http://localhost:5000/static/list.txt`)
+            axios.get(`https://best-way.herokuapp.com/static/list.txt`)
                 .then(response => {
                     resolve(response.data);
                 })
