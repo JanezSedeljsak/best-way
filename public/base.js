@@ -1,5 +1,5 @@
 //code below executes on load
-window.api = "https://best-way.herokuapp.com/api";
+window.api = "http://localhost:5000/api";
 
 let app = angular.module("myApp", []);
 app.controller("myCtrl", [
@@ -14,19 +14,17 @@ app.controller("myCtrl", [
         $scope.start = "";
         $scope.end = "";
         $scope.valid = [false, false];
+
         $scope.validate = function(loc, indx) {
-            debugger;
             $scope.valid[indx] = $scope.possibleCities.includes(loc);
         };
 
         $scope.search = function() {
-            debugger;
-            let validLocations = $scope.validate();
-            console.log(
-                validLocations, 
-                $scope.possibleCities.includes($scope.start), 
-                $scope.possibleCities.includes($scope.end)
-            );
+            fetch(`${window.api}/between/${$scope.start}/${$scope.end}`)
+            .then(response => response.json())
+            .then(json => {
+               console.log(json);
+            });
         }
     }
 ]);

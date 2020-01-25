@@ -21,6 +21,16 @@ class Methods {
         });
     }
 
+    static getGeolocationByName(_name) {
+        return new Promise(async resolve => {
+            axios.get(`https://geocoder.ls.hereapi.com/6.2/geocode.json?apiKey=3pwTWXX_AtpLB6OkzdFO3Ns8eJ3nc9Wke6GXnbnwOPQ&searchtext=${_name}`)
+                .then(response => {
+                    resolve(response.data.Response.View[0].Result[0].Location.DisplayPosition);
+                })
+                .catch(err => resolve(err))
+        });  
+    }
+
     static getGeolocationWeather({ latitude, longitude }) {
         return new Promise(async resolve => {
             axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${(latitude)}&lon=${(longitude)}&units=metric&appid=` + '70ef7d1ecc959f4ef1a91a8a4ab7a914')
@@ -41,9 +51,9 @@ class Methods {
         });
     }
 
-    static getLocationsBeetwen() {
+    static getLocationsBeetwen(start, end) {
         return new Promise(async resolve => {
-            axios.get("https://route.ls.hereapi.com/routing/7.2/calculateroute.json?apiKey=3pwTWXX_AtpLB6OkzdFO3Ns8eJ3nc9Wke6GXnbnwOPQ&waypoint0=geo!46.0565,14.5081&waypoint1=geo!48.2082,16.3738&mode=fastest;car;traffic:disabled")
+            axios.get(`https://route.ls.hereapi.com/routing/7.2/calculateroute.json?apiKey=3pwTWXX_AtpLB6OkzdFO3Ns8eJ3nc9Wke6GXnbnwOPQ&waypoint0=geo!${start.Latitude},${start.Longitude}&waypoint1=geo!${end.Latitude},${end.Longitude}&mode=fastest;car;traffic:disabled`)
             .then(response => {
                 let points;
                 try {
@@ -72,7 +82,12 @@ app.get('/doc', (req, res) => res.sendFile(path.join(views + '/documentation.htm
 
 // api routes
 app.get('/api/between/:start/:end', async (req, res) => {
-    let locations = await Methods.getLocationsBeetwen();
+    let start = await Methods.getGeolocationByName(req.params.start);
+    let end = await Methods.getGeolocationByName(req.params.end);
+
+    console.log("start end after get mjau", start, end);
+
+    let locations = await Methods.getLocationsBeetwen(start, end);
     if(locations.length) {
         locations = await Promise.all(locations.map(async x => await Methods.getGeolocationWeather(x)))
         locations = locations

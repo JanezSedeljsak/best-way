@@ -82,16 +82,6 @@ app.controller("myCtrl", [
             $scope.locations.splice(_index, 1);
         };
 
-        $scope.basicFetch = async () => {
-            $scope.wayView = true;
-            window.event.preventDefault();
-            let response = await fetch(
-                `${window.api}/basic/${$scope.locations[0]}/${$scope.locations[1]}`
-            );
-            let json = await response.json();
-            $scope.locResult = json;
-        };
-
         $scope.arrayFetch = async () => {
             window.event.preventDefault();
             let response = await fetch(
