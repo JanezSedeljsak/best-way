@@ -1,13 +1,18 @@
 const express = require('express')
 const axios = require('axios')
+const cors = require('cors')
 const app = express()
 const path = require('path')
 const views = __dirname + '/src'
+const { getCode, getName } = require('country-list')
 
-app.use((req, res, next) => {
+/*app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     next();
-})
+})*/
+
+// cross origin
+app.use(cors({ origin: '*', optionsSuccessStatus: 200, credentials: true }));
 
 class Methods {
     static getLocationWeather(_location) {
@@ -18,6 +23,21 @@ class Methods {
                 })
                 .catch(err => resolve(err))
         });
+    }
+
+    static sortByHighestTemp(_weatherArray) {
+        return _weatherArray.sort((a, b) => (a.main.temp > b.main.temp) ? 1 : -1)
+    }
+
+
+    static getGeolocationWeather({ latitude, longitude }) {
+        return new Promise(async resolve => {
+            axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${(latitude)}&lon=${(longitude)}&units=metric&appid=` + '70ef7d1ecc959f4ef1a91a8a4ab7a914')
+                .then(response => {
+                    resolve(response.data);
+                })
+                .catch(err => resolve(err))
+        });  
     }
 
     static getCitiesList() {
@@ -41,10 +61,9 @@ class Methods {
                     points = [];
                 }
                 if(points.length) {
-                    resolve(points.map(item => {
-                        let { latitude, longitude } = item.position;
-                        return { lat: latitude, lon: longitude };
-                    }))
+                    let result = points
+                        .map(item => item.position)
+                    resolve(result);
                 } else {
                     resolve([]);
                 }
@@ -57,10 +76,31 @@ class Methods {
 app.get('/locray', (req, res) => res.sendFile(path.join(views + '/locray.html')));
 app.get('/', (req, res) => res.sendFile(path.join(views + '/base.html')));
 
-app.get('/api/basic/:start/:end', async (req, res) => {
+app.get('/api/between/:start/:end', async (req, res) => {
+    let locations = await Methods.getLocationsBeetwen();
+    if(locations.length) {
+        locations = await Promise.all(locations.map(async x => await Methods.getGeolocationWeather(x)))
+        locations = locations
+            .sort((a, b) => a.main.temp > b.main.temp ? -1 : 1)
+            .map(item => ({
+                location: {
+                    longitude: item.coord.lon || null,
+                    latitude: item.coord.lat || null
+                }, 
+                weather: {
+                    temp: item.main.temp,
+                    wind: item.wind.speed,
+                    country: getName(item.sys.country),
+                    main: item.weather.main
+                }
+            }));
+
+
+        locations = locations.length > 5 ? locations.slice(0, 5) : locations;
+    }
     res.status(200).json({
         ok: true,
-        result: await Methods.getLocationsBeetwen()
+        result: locations
     });
 });
 
