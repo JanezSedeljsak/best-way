@@ -29,6 +29,29 @@ class Methods {
                 .catch(err => resolve(err))
         });
     }
+
+    static getLocationsBeetwen() {
+        return new Promise(async resolve => {
+            axios.get("https://route.ls.hereapi.com/routing/7.2/calculateroute.json?apiKey=3pwTWXX_AtpLB6OkzdFO3Ns8eJ3nc9Wke6GXnbnwOPQ&waypoint0=geo!46.0565,14.5081&waypoint1=geo!48.2082,16.3738&mode=fastest;car;traffic:disabled")
+            .then(response => {
+                let points;
+                try {
+                    points = response.data.response.route[0].leg[0].maneuver
+                } catch(err) {
+                    points = [];
+                }
+                if(points.length) {
+                    resolve(points.map(item => {
+                        let { latitude, longitude } = item.position;
+                        return { lat: latitude, lon: longitude };
+                    }))
+                } else {
+                    resolve([]);
+                }
+            })
+            .catch(err => resolve(err))
+        });
+    }
 }
 
 app.get('/locray', (req, res) => res.sendFile(path.join(views + '/locray.html')));
@@ -36,11 +59,11 @@ app.get('/', (req, res) => res.sendFile(path.join(views + '/base.html')));
 
 app.get('/api/basic/:start/:end', async (req, res) => {
     res.status(200).json({
-        ok: false,
-        start: await Methods.getLocationWeather(req.params.start),
-        end: await Methods.getLocationWeather(req.params.end)
+        ok: true,
+        result: await Methods.getLocationsBeetwen()
     });
 });
+
 app.get('/api/locations/:locations', async (req, res) => {
     if (JSON.parse(req.params.locations).length > 1) {
         res.status(200).json({
