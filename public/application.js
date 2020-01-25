@@ -90,7 +90,7 @@ app.controller("myCtrl", [
             let json = await response.json();
             $scope.locResult = json.result;
             console.log($scope.locResult);
-            $scope.wayView = true;
+            //$scope.wayView = true;
         };
     }
 ]);
