@@ -4,15 +4,11 @@ const cors = require('cors')
 const app = express()
 const path = require('path')
 const views = __dirname + '/src'
-const { getCode, getName } = require('country-list')
+const { getName } = require('country-list')
 
-/*app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    next();
-})*/
-
-// cross origin
-app.use(cors({ origin: '*', optionsSuccessStatus: 200, credentials: true }));
+app.use(cors({ origin: '*', optionsSuccessStatus: 200, credentials: true }))
+app.use('/static', express.static('public'))
+app.listen(process.env.PORT || 5000, () => console.log(`App running`))
 
 class Methods {
     static getLocationWeather(_location) {
@@ -24,11 +20,6 @@ class Methods {
                 .catch(err => resolve(err))
         });
     }
-
-    static sortByHighestTemp(_weatherArray) {
-        return _weatherArray.sort((a, b) => (a.main.temp > b.main.temp) ? 1 : -1)
-    }
-
 
     static getGeolocationWeather({ latitude, longitude }) {
         return new Promise(async resolve => {
@@ -73,9 +64,13 @@ class Methods {
     }
 }
 
+// view routes
 app.get('/locray', (req, res) => res.sendFile(path.join(views + '/locray.html')));
 app.get('/', (req, res) => res.sendFile(path.join(views + '/base.html')));
+app.get('/doc', (req, res) => res.sendFile(path.join(views + '/documentation.html')));
 
+
+// api routes
 app.get('/api/between/:start/:end', async (req, res) => {
     let locations = await Methods.getLocationsBeetwen();
     if(locations.length) {
@@ -106,9 +101,27 @@ app.get('/api/between/:start/:end', async (req, res) => {
 
 app.get('/api/locations/:locations', async (req, res) => {
     if (JSON.parse(req.params.locations).length > 1) {
+        let result =  await Promise.all(JSON.parse(req.params.locations).map(async x => await Methods.getLocationWeather(x)))
+        result = result
+            .sort((a, b) => a.main.temp > b.main.temp ? -1 : 1)
+            .map(item => ({
+                location: {
+                    longitude: item.coord.lon || null,
+                    latitude: item.coord.lat || null
+                }, 
+                weather: {
+                    temp: item.main.temp,
+                    wind: item.wind.speed,
+                    country: getName(item.sys.country),
+                    main: item.weather.main
+                }
+            }));
+
+        result = result.length > 5 ? result.slice(0, 5) : result;
+
         res.status(200).json({
             ok: true,
-            result: await Promise.all(JSON.parse(req.params.locations).map(async x => await Methods.getLocationWeather(x)))
+            result: result
         });
     } else {
         res.status(200).json({
@@ -126,11 +139,3 @@ app.get('/api/cities', async (req, res) => {
         result: result.split("\n").map(loc => ({ title: loc }))
     });
 })
-app.use('/static', express.static('public'));
-
-app.listen(process.env.PORT || 5000, () => console.log(`App running`))
-
-
-/*
-fetch("https://route.ls.hereapi.com/routing/7.2/calculateroute.json?apiKey=3pwTWXX_AtpLB6OkzdFO3Ns8eJ3nc9Wke6GXnbnwOPQ&waypoint0=geo!52.5,13.4&waypoint1=geo!52.5,13.45&mode=fastest;car;traffic:disabled").then(resposne => resposne.json()).then(console.log);
-*/
