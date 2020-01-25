@@ -1,5 +1,5 @@
 //code below executes on load
-window.api = "http://localhost:5000/api";
+window.api = "https://best-way.herokuapp.com/api";
 
 let app = angular.module("myApp", []);
 app.controller("myCtrl", [
@@ -14,7 +14,6 @@ app.controller("myCtrl", [
         $scope.start = "";
         $scope.end = "";
         $scope.valid = [false, false];
-
         $scope.validate = function(loc, indx) {
             $scope.valid[indx] = $scope.possibleCities.includes(loc);
         };
