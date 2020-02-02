@@ -28,7 +28,7 @@ class Methods {
                     resolve(response.data.Response.View[0].Result[0].Location.DisplayPosition);
                 })
                 .catch(err => resolve(err))
-        });  
+        });
     }
 
     static getGeolocationWeather({ latitude, longitude }) {
@@ -38,7 +38,7 @@ class Methods {
                     resolve(response.data);
                 })
                 .catch(err => resolve(err))
-        });  
+        });
     }
 
     static getCitiesList() {
@@ -54,22 +54,22 @@ class Methods {
     static getLocationsBeetwen(start, end) {
         return new Promise(async resolve => {
             axios.get(`https://route.ls.hereapi.com/routing/7.2/calculateroute.json?apiKey=3pwTWXX_AtpLB6OkzdFO3Ns8eJ3nc9Wke6GXnbnwOPQ&waypoint0=geo!${start.Latitude},${start.Longitude}&waypoint1=geo!${end.Latitude},${end.Longitude}&mode=fastest;car;traffic:disabled`)
-            .then(response => {
-                let points;
-                try {
-                    points = response.data.response.route[0].leg[0].maneuver
-                } catch(err) {
-                    points = [];
-                }
-                if(points.length) {
-                    let result = points
-                        .map(item => item.position)
-                    resolve(result);
-                } else {
-                    resolve([]);
-                }
-            })
-            .catch(err => resolve(err))
+                .then(response => {
+                    let points;
+                    try {
+                        points = response.data.response.route[0].leg[0].maneuver
+                    } catch (err) {
+                        points = [];
+                    }
+                    if (points.length) {
+                        let result = points
+                            .map(item => item.position)
+                        resolve(result);
+                    } else {
+                        resolve([]);
+                    }
+                })
+                .catch(err => resolve(err))
         });
     }
 }
@@ -87,43 +87,42 @@ app.get('/api/between/:start/:end', async (req, res) => {
 
     console.log("start end after get mjau", start, end);
 
-    let locations = await Methods.getLocationsBeetwen(start, end);
-    if(locations.length) {
-        locations = await Promise.all(locations.map(async x => await Methods.getGeolocationWeather(x)))
-        locations = locations
-            .sort((a, b) => a.main.temp > b.main.temp ? -1 : 1)
-            .map(item => ({
-                location: {
-                    longitude: item.coord.lon || null,
-                    latitude: item.coord.lat || null
-                }, 
-                weather: {
-                    temp: item.main.temp,
-                    wind: item.wind.speed,
-                    country: getName(item.sys.country),
-                    main: item.weather.main
-                }
-            }));
+    let locations = await Methods.getLocationsBeetwen(start, end),
+        result    = [],
+        chunkSize     = Math.round(locations.length / 5);
 
-
-        locations = locations.length > 5 ? locations.slice(0, 5) : locations;
+    for (let i = 0, len = locations.length; i < len; i += chunkSize) {
+        let current = locations.slice(i, i + chunkSize)
+        current = await Promise.all(current.map(async x => await Methods.getGeolocationWeather(x)));
+        current = current.sort((a, b) => a.main.temp > b.main.temp ? -1 : 1)[0]
+        result.push({
+            location: {
+                longitude: current.coord.lon || null,
+                latitude: current.coord.lat || null
+            },
+            weather: {
+                temp: current.main.temp,
+                wind: current.wind.speed,
+                country: getName(current.sys.country),
+                city: current.name ? current.name : "",
+                main: current.weather.main,
+            }
+        })
     }
-    res.status(200).json({
-        ok: true,
-        result: locations
-    });
+
+    res.status(200).json({ ok: true, result });
 });
 
 app.get('/api/locations/:locations', async (req, res) => {
     if (JSON.parse(req.params.locations).length > 1) {
-        let result =  await Promise.all(JSON.parse(req.params.locations).map(async x => await Methods.getLocationWeather(x)))
+        let result = await Promise.all(JSON.parse(req.params.locations).map(async x => await Methods.getLocationWeather(x)))
         result = result
             .sort((a, b) => a.main.temp > b.main.temp ? -1 : 1)
             .map(item => ({
                 location: {
                     longitude: item.coord.lon || null,
                     latitude: item.coord.lat || null
-                }, 
+                },
                 weather: {
                     temp: item.main.temp,
                     wind: item.wind.speed,
