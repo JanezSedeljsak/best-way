@@ -1,6 +1,6 @@
 <img src="https://github.com/matiassingers/awesome-readme/blob/master/icon.png" align="right" />
 
-# Job Bakerei
+# Best Way
 
 This is a webapplications with a plain interface and an api (more info on [Documentation](https://best-way.herokuapp.com/doc))...
 
