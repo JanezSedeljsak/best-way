@@ -105,7 +105,7 @@ app.get('/api/between/:start/:end', async (req, res) => {
                 wind: current.wind.speed,
                 country: getName(current.sys.country),
                 city: current.name ? current.name : "",
-                main: current.weather.main,
+                main: current.weather[0].main,
             }
         })
     }
