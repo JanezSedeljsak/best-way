@@ -75,22 +75,27 @@ class Methods {
     }
 
     static retriveDataForResponse(response) {
-        return {
-            location: {
-                longitude: response.coord.lon || null,
-                latitude: response.coord.lat || null
-            },
-            weather: {
-                temp: response.main.temp,
-                wind: response.wind.speed,
-                country: getName(response.sys.country),
-                city: response.name ? response.name : "",
-                main: response.weather[0].main,
-                description: response.weather[0].description,
-                pressure: response.main.pressure,
-                humidity: response.main.humidity
+        if (Object.values(response).length) {
+            return {
+                location: {
+                    longitude: response.coord.lon || null,
+                    latitude: response.coord.lat || null
+                },
+                weather: {
+                    temp: response.main.temp,
+                    wind: response.wind.speed,
+                    country: getName(response.sys.country),
+                    city: response.name ? response.name : "",
+                    main: response.weather[0].main,
+                    description: response.weather[0].description,
+                    pressure: response.main.pressure,
+                    humidity: response.main.humidity
+                }
             }
+        } else {
+            return { result: "INVALID LOCATION" }
         }
+
     };
 }
 
@@ -126,7 +131,7 @@ app.get('/api/locations/:locations', async (req, res) => {
         let result = await Promise.all(JSON.parse(req.params.locations).map(async x => await Methods.getLocationWeather(x)))
         result = result
             .sort((a, b) => a.main.temp > b.main.temp ? -1 : 1)
-            .map(item => Methods.retriveDataForResponse(current));
+            .map(item => Methods.retriveDataForResponse(item));
 
         result = result.length > 5 ? result.slice(0, 5) : result;
 
@@ -153,7 +158,7 @@ app.get('/api/weather/:cityname', async (req, res) => {
 
 app.get('/api/weather/:lat/:lon', async (req, res) => {
     const { lat, lon } = req.params;
-    const response = await Methods.getGeolocationWeather({ lat, lon });
+    const response = await Methods.getGeolocationWeather({ latitude: lat, longitude: lon });
     res.status(200).json({
         ok: true,
         result: Methods.retriveDataForResponse(response)
