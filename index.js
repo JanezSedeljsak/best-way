@@ -19,6 +19,7 @@ class Methods {
                 })
                 .catch(err => resolve(err))
         });
+
     }
 
     static getGeolocationByName(_name) {
@@ -72,6 +73,25 @@ class Methods {
                 .catch(err => resolve(err))
         });
     }
+
+    static retriveDataForResponse(response) {
+        return {
+            location: {
+                longitude: response.coord.lon || null,
+                latitude: response.coord.lat || null
+            },
+            weather: {
+                temp: response.main.temp,
+                wind: response.wind.speed,
+                country: getName(response.sys.country),
+                city: response.name ? response.name : "",
+                main: response.weather[0].main,
+                description: response.weather[0].description,
+                pressure: response.main.pressure,
+                humidity: response.main.humidity
+            }
+        }
+    };
 }
 
 // view routes
@@ -88,26 +108,14 @@ app.get('/api/between/:start/:end', async (req, res) => {
     console.log("start end after get mjau", start, end);
 
     let locations = await Methods.getLocationsBeetwen(start, end),
-        result    = [],
-        chunkSize     = Math.round(locations.length / 5);
+        result = [],
+        chunkSize = Math.round(locations.length / 5);
 
     for (let i = 0, len = locations.length; i < len; i += chunkSize) {
         let current = locations.slice(i, i + chunkSize)
         current = await Promise.all(current.map(async x => await Methods.getGeolocationWeather(x)));
         current = current.sort((a, b) => a.main.temp > b.main.temp ? -1 : 1)[0]
-        result.push({
-            location: {
-                longitude: current.coord.lon || null,
-                latitude: current.coord.lat || null
-            },
-            weather: {
-                temp: current.main.temp,
-                wind: current.wind.speed,
-                country: getName(current.sys.country),
-                city: current.name ? current.name : "",
-                main: current.weather[0].main,
-            }
-        })
+        result.push(Methods.retriveDataForResponse(current))
     }
 
     res.status(200).json({ ok: true, result });
@@ -118,18 +126,7 @@ app.get('/api/locations/:locations', async (req, res) => {
         let result = await Promise.all(JSON.parse(req.params.locations).map(async x => await Methods.getLocationWeather(x)))
         result = result
             .sort((a, b) => a.main.temp > b.main.temp ? -1 : 1)
-            .map(item => ({
-                location: {
-                    longitude: item.coord.lon || null,
-                    latitude: item.coord.lat || null
-                },
-                weather: {
-                    temp: item.main.temp,
-                    wind: item.wind.speed,
-                    country: getName(item.sys.country),
-                    main: item.weather.main
-                }
-            }));
+            .map(item => Methods.retriveDataForResponse(current));
 
         result = result.length > 5 ? result.slice(0, 5) : result;
 
@@ -146,10 +143,27 @@ app.get('/api/locations/:locations', async (req, res) => {
 
 });
 
+app.get('/api/weather/:cityname', async (req, res) => {
+    const response = await Methods.getLocationWeather(req.params.cityname);
+    res.status(200).json({
+        ok: true,
+        result: Methods.retriveDataForResponse(response)
+    });
+});
+
+app.get('/api/weather/:lat/:lon', async (req, res) => {
+    const { lat, lon } = req.params;
+    const response = await Methods.getGeolocationWeather({ lat, lon });
+    res.status(200).json({
+        ok: true,
+        result: Methods.retriveDataForResponse(response)
+    });
+});
+
 app.get('/api/cities', async (req, res) => {
     let result = await Methods.getCitiesList();
     res.status(200).json({
         ok: true,
         result: result.split("\n").map(loc => ({ title: loc }))
     });
-})
+});
