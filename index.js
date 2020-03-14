@@ -110,8 +110,6 @@ app.get('/api/between/:start/:end', async (req, res) => {
     let start = await Methods.getGeolocationByName(req.params.start);
     let end = await Methods.getGeolocationByName(req.params.end);
 
-    console.log("start end after get mjau", start, end);
-
     let locations = await Methods.getLocationsBeetwen(start, end),
         result = [],
         chunkSize = Math.round(locations.length / 5);
