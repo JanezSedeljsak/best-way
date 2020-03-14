@@ -1,0 +1,7 @@
+/*! pretty-print-json v0.2.0 ~ github.com/center-key/pretty-print-json ~ MIT License */
+
+.json-key     { color: #be3939; }
+.json-string  { color: #318826; }
+.json-number  { color: #756312; }
+.json-boolean { color: #8760b4; }
+.json-null    { color: #0b148a; }

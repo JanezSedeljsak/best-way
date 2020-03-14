@@ -5,17 +5,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./static/pretty-print-json.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" 
+            integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" 
+            crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
     <link rel="icon" href="https://findicons.com/files/icons/684/vistoon/128/globe.png" type="image/x-icon" />
     <style>
         @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+
         .header.h1-tingy {
             background-color: #3778b4;
             padding: 10px;
             border: 1px solid #333;
             color: #eee !important;
+        }
+
+        @media (orientation: portrait) {
+            .card-container {
+                padding: 10px !important;
+            }
         }
 
         a {
@@ -32,31 +42,38 @@
             font-weight: bold !important
         }
 
-        * {
+        *:not(pre *) {
+            word-wrap: break-word !important;
             color: #222 !important;
-        }
-
-        *:not(pre) {
             font-family: 'Montserrat', sans-serif;
         }
 
         .ui.card {
+            border-radius: 0px !important;
             width: calc(100% - 40px);
             margin-top: 50px;
             margin-bottom: 50px;
             margin-left: 20px;
+            box-shadow: 0 5px 5px #5d5d5dbc;
+        }
+
+        .card-container {
+            padding: 30px;
         }
     </style>
     <title>Documentation</title>
+    <script src="./static/pretty-print-json.min.js"></script>
+    <script src="./static/json-format.js"></script>
 </head>
 
 <body
-    style="padding: 10px; background:url(https://i.imgur.com/pesUhWb.png); background-size: cover; background-attachment: fixed;">
-    <h1 style="color: #666 !important">
-        Provided routes by Best-Way REST API
-    </h1>
-    <hr />
-    <div style="padding: 40px">
+    style="background:url(https://i.imgur.com/pesUhWb.png); background-size: cover; background-attachment: fixed;">
+    <div style="width: 100%; padding: 10px; background-color: #3778b4; box-shadow: 0 5px 5px #5d5d5dbc;">
+        <h1 style="color: #eee !important;">
+            Provided routes by Best-Way REST API
+        </h1>
+    </div>
+    <div class="card-container">
         <h2>List of APIs</h2>
         <div class="ui relaxed divided list">
             <div class="item">
@@ -93,114 +110,13 @@
                     <b>EXAMPLE</b>: <a
                         href="https://best-way.herokuapp.com/api/between/ljubljana/vienna">https://best-way.herokuapp.com/api/between/ljubljana/vienna</a><br />
                     <b>REQUEST TYPE:</b> GET<br />
-                    <b>PARAMS</b>: (start & end location) → STRINGS <br />
+                    <b>PARAMS</b>: start → STRING, end → STRING <br />
                     <b>RESPONSE</b>: 5 inbetween locations with the highest temp
                 </div>
                 <div class="description"
-                    style="background: #ddd7c1; border: 1px solid #162736; padding: 5px; margin: 10px; max-height: 50vh; overflow-y: scroll">
+                    style="background: #dbd6c3; border: 1px solid #162736; padding: 5px; margin: 10px; max-height: 60vh; overflow-y: scroll">
                     <div class="meta">Reponse example:</div>
-                    <pre>   {
-        "ok":true,
-        "result":[
-            {
-                "location":{
-                    "longitude":14.5,
-                    "latitude":46.05
-                },
-                "weather":{
-                    "temp":6.48,
-                    "wind":2.1,
-                    "country":"Slovenia",
-                    "city":"Ljubljana",
-                    "main":"Clouds",
-                    "description":"overcast clouds",
-                    "pressure":1020,
-                    "humidity":87
-                }
-            },
-            {
-                "location":{
-                    "longitude":14.51,
-                    "latitude":46.06
-                },
-                "weather":{
-                    "temp":5.95,
-                    "wind":2.1,
-                    "country":"Slovenia",
-                    "city":"Ljubljana",
-                    "main":"Clouds",
-                    "description":"overcast clouds",
-                    "pressure":1020,
-                    "humidity":87
-                }
-            },
-            {
-                "location":{
-                    "longitude":15.65,
-                    "latitude":46.69
-                },
-                "weather":{
-                    "temp":5.19,
-                    "wind":1.5,
-                    "country":"Slovenia",
-                    "city":"Šentilj",
-                    "main":"Rain",
-                    "description":"light rain",
-                    "pressure":1021,
-                    "humidity":100
-                }
-            },
-            {
-                "location":{
-                    "longitude":16.37,
-                    "latitude":48.19
-                },
-                "weather":{
-                    "temp":4.59,
-                    "wind":2.6,
-                    "country":"Austria",
-                    "city":"Vienna",
-                    "main":"Clear",
-                    "description":"clear sky",
-                    "pressure":1020,
-                    "humidity":60
-                }
-            },
-            {
-                "location":{
-                    "longitude":16.37,
-                    "latitude":48.2
-                },
-                "weather":{
-                    "temp":4.59,
-                    "wind":2.6,
-                    "country":"Austria",
-                    "city":"Vienna",
-                    "main":"Clear",
-                    "description":"clear sky",
-                    "pressure":1020,
-                    "humidity":60
-                }
-            },
-            {
-                "location":{
-                    "longitude":16.37,
-                    "latitude":48.2
-                },
-                "weather":{
-                    "temp":4.59,
-                    "wind":2.6,
-                    "country":"Austria",
-                    "city":"Vienna",
-                    "main":"Clear",
-                    "description":"clear sky",
-                    "pressure":1020,
-                    "humidity":60
-                }
-            }
-        ]
-    }
-                            </pre>
+                    <pre id="res_1"></pre>
                 </div>
             </div>
         </div>
@@ -214,84 +130,15 @@
                         href='https://best-way.herokuapp.com/api/locations/["celje","praga","ljubljana","koper"]'>best-way.herokuapp.com/api/locations/["celje","praga","ljubljana",
                         "koper"]</a><br />
                     <b>REQUEST TYPE:</b> GET<br />
-                    <b>PARAMS</b>: locations (JSON stringified array) → Array[STRING] <br />
+                    <b>PARAMS</b>: locations (JSON stringified array) → ARRAY[STRING] <br />
                     <b>RESPONSE</b>: Weather for all locations or 5 inbetween locations with the highest temp if more
                     than 5
                     items in array
                 </div>
                 <div class="description"
-                    style="background: #ddd7c1; border: 1px solid #162736; padding: 5px; margin: 10px; max-height: 50vh; overflow-y: scroll">
+                    style="background: #dbd6c3; border: 1px solid #162736; padding: 5px; margin: 10px; max-height: 60vh; overflow-y: scroll">
                     <div class="meta">Reponse example:</div>
-                    <pre>   {
-        "ok":true,
-        "result":[
-            {
-                "location":{
-                    "longitude":13.73,
-                    "latitude":45.55
-                },
-                "weather":{
-                    "temp":282.89,
-                    "wind":2.1,
-                    "country":"Slovenia",
-                    "city":"Koper",
-                    "main":"Clouds",
-                    "description":"overcast clouds",
-                    "pressure":1016,
-                    "humidity":58
-                }
-            },
-            {
-                "location":{
-                    "longitude":14.51,
-                    "latitude":46.05
-                },
-                "weather":{
-                    "temp":279.7,
-                    "wind":2.1,
-                    "country":"Slovenia",
-                    "city":"Ljubljana",
-                    "main":"Clouds",
-                    "description":"overcast clouds",
-                    "pressure":1020,
-                    "humidity":87
-                }
-            },
-            {
-                "location":{
-                    "longitude":15.26,
-                    "latitude":46.23
-                },
-                "weather":{
-                    "temp":279.24,
-                    "wind":0.5,
-                    "country":"Slovenia",
-                    "city":"Celje",
-                    "main":"Rain",
-                    "description":"light rain",
-                    "pressure":1021,
-                    "humidity":93
-                }
-            },
-            {
-                "location":{
-                    "longitude":14.42,
-                    "latitude":50.09
-                },
-                "weather":{
-                    "temp":277.88,
-                    "wind":3.1,
-                    "country":"Czechia",
-                    "city":"Prague",
-                    "main":"Clear",
-                    "description":"clear sky",
-                    "pressure":1018,
-                    "humidity":56
-                }
-            }
-        ]
-    }
-                                        </pre>
+                    <pre id="res_2"></pre>
                 </div>
             </div>
         </div>
@@ -304,33 +151,13 @@
                     <b>EXAMPLE</b>: <a
                         href='https://best-way.herokuapp.com/api/weather/ljubljana'>https://best-way.herokuapp.com/api/weather/ljubljana</a><br />
                     <b>REQUEST TYPE:</b> GET<br />
-                    <b>PARAMS</b>: location name → STRING <br />
+                    <b>PARAMS</b>: cityname → STRING <br />
                     <b>RESPONSE</b>: Weather object for single location (search is based on location name)
                 </div>
                 <div class="description"
-                    style="background: #ddd7c1; border: 1px solid #162736; padding: 5px; margin: 10px; max-height: 50vh; overflow-y: scroll">
+                    style="background: #dbd6c3; border: 1px solid #162736; padding: 5px; margin: 10px; max-height: 60vh; overflow-y: scroll">
                     <div class="meta">Reponse example:</div>
-                    <pre>   { 
-        {
-            "ok":true,
-            "result":{
-                "location":{
-                    "longitude":14.51,
-                    "latitude":46.05
-                },
-                "weather":{
-                    "temp":279.44,
-                    "wind":2.1,
-                    "country":"Slovenia",
-                    "city":"Ljubljana",
-                    "main":"Clouds",
-                    "description":"overcast clouds",
-                    "pressure":1020,
-                    "humidity":87
-                }
-            }
-    }
-                                        </pre>
+                    <pre id="res_3"></pre>
                 </div>
             </div>
         </div>
@@ -343,37 +170,17 @@
                     <b>EXAMPLE</b>: <a
                         href='https://best-way.herokuapp.com/api/weather/46.23092/15.26044'>https://best-way.herokuapp.com/api/weather/46.23092/15.26044</a><br />
                     <b>REQUEST TYPE:</b> GET<br />
-                    <b>PARAMS</b>: latitude → DOUBLE, latitude → DOUBLE <br />
+                    <b>PARAMS</b>: lat → DOUBLE, lon → DOUBLE <br />
                     <b>RESPONSE</b>: Weather object for single location (search is based on geolocation)
                 </div>
                 <div class="description"
-                    style="background: #ddd7c1; border: 1px solid #162736; padding: 5px; margin: 10px; max-height: 50vh; overflow-y: scroll">
+                    style="background: #dbd6c3; border: 1px solid #162736; padding: 5px; margin: 10px; max-height: 60vh; overflow-y: scroll">
                     <div class="meta">Reponse example:</div>
-                    <pre>   {
-        "ok":true,
-        "result":{
-            "location":{
-                "longitude":15.26,
-                "latitude":46.23
-            },
-            "weather":{
-                "temp":6.09,
-                "wind":0.5,
-                "country":"Slovenia",
-                "city":"Celje",
-                "main":"Rain",
-                "description":"light rain",
-                "pressure":1021,
-                "humidity":93
-            }
-        }
-    }
-                                        </pre>
+                    <pre id="res_4"></pre>
                 </div>
             </div>
         </div>
     </div>
-
 
 </body>
 
