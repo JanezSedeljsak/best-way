@@ -13,7 +13,7 @@ app.listen(process.env.PORT || 5000, () => console.log(`App running`))
 class Methods {
     static getLocationWeather(_location) {
         return new Promise(async resolve => {
-            axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${_location}&appid=` + '70ef7d1ecc959f4ef1a91a8a4ab7a914')
+            axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${_location}&units=metric&appid=` + '70ef7d1ecc959f4ef1a91a8a4ab7a914')
                 .then(response => {
                     resolve(response.data);
                 })
@@ -82,7 +82,7 @@ class Methods {
                     latitude: response.coord.lat || null
                 },
                 weather: {
-                    temp: response.main.temp - 273,
+                    temp: response.main.temp,
                     wind: response.wind.speed,
                     country: getName(response.sys.country),
                     city: response.name ? response.name : "",
