@@ -82,7 +82,7 @@ class Methods {
                     latitude: response.coord.lat || null
                 },
                 weather: {
-                    temp: response.main.temp,
+                    temp: response.main.temp - 273,
                     wind: response.wind.speed,
                     country: getName(response.sys.country),
                     city: response.name ? response.name : "",
